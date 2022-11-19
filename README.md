@@ -42,6 +42,31 @@ Basically there are 3 steps
     res.write("Hello from the server!");
 ```
 
+```
+import http from "http";
+
+const server = http.createServer((req, res) => {
+  res.setHeader("Content-type", "text/html");
+  for (let i = 0; i <= 10; i++) {
+    res.write(`<h1>${i}</h1>`);
+  }
+  res.end();
+});
+
+server.listen(3000, "localhost", () => {
+  console.log("Listening to localhost");
+});
+
+server.on("listening", () => {
+  console.log("Server listening on port number 3000");
+});
+
+server.on("request", (req, res) => {
+  console.log(`${req.method} request to page:${req.url}`);
+  res.end();
+});
+```
+
 Once all responses are sent then we end it using `res.end();`
 
 Ideally we create a separate file for html pages and the node server will read those files and send it back to the browser
@@ -92,12 +117,15 @@ const server = http.createServer((req, res) => {
   switch (req.url) {
     case "/":
       path += "index.html";
+      res.statusCode = 200;
       break;
     case "/about":
       path += "about.html";
+      res.statusCode = 200;
       break;
     default:
       path += "404.html";
+      res.statusCode = 404;
       break;
   }
   fs.readFile(path, (err, data) => {
@@ -110,3 +138,20 @@ const server = http.createServer((req, res) => {
   });
 });
 ```
+
+Redirects
+
+```
+case "/about":
+      path += "about.html";
+      res.statusCode = 200;
+      break;
+
+case "/about-me":
+      res.statusCode = 301;
+      res.setHeader("Location", "/about");
+      res.end();
+      break;
+```
+
+This is just the GET request only, while working with multiple request types like GET, POST, DEL, we use Express.js
