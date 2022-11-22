@@ -169,13 +169,14 @@ Parsing is done using the "url" core module.
       res.end("<p>This is home page!</p>");
       break;
     case "/api/users":
+      res.setHeader("Content-Type", "applicatiom/json");
       let json = JSON.stringify(getUsers());
       res.end(json);
       break;
   }
 ```
 
-[code](link)
+[code](https://github.com/emmanuelkiranr/Node-server/blob/main/getJsonData.js)
 
 ### JSON as response
 
@@ -202,4 +203,4 @@ function getUsers() {
 }
 ```
 
-[code](link)
+[code](https://github.com/emmanuelkiranr/Node-server/blob/main/getJsonData.js)

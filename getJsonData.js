@@ -11,6 +11,7 @@ const server = http.createServer((req, res) => {
       break;
     case "/api/users":
       let json = JSON.stringify(getUsers());
+      res.setHeader("Content-Type", "application/json");
       res.end(json);
       break;
   }
@@ -25,16 +26,20 @@ server.on("request", (req, res) => {
 });
 
 function getUsers() {
+  let id = 1;
   return [
     {
+      id: id++,
       email: "qwe@gmail.com",
       name: "Alice",
     },
     {
+      id: id++,
       email: "asd@gmail.com",
       name: "Bob",
     },
     {
+      id: id++,
       email: "zxc@gmail.com",
       name: "Carol",
     },
