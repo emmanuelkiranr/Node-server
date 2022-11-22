@@ -156,7 +156,28 @@ case "/about-me":
 
 NOTE: This is just the GET request only, while working with multiple request types like GET, POST, DEL, we use Express.js
 
-JSON as response
+### Parsing an URL
+
+Instead of comparing the path with req.url we can parse the url that is been requested and get the path, pathname etc. which then can be used to compare and send response.
+Parsing is done using the "url" core module.
+
+```
+  const link = url.parse(req.url, true);
+  const path = link.pathname;
+  switch (path) {
+    case "/":
+      res.end("<p>This is home page!</p>");
+      break;
+    case "/api/users":
+      let json = JSON.stringify(getUsers());
+      res.end(json);
+      break;
+  }
+```
+
+[code](link)
+
+### JSON as response
 
 To display a json object as response we need to fetch the object first or explicitely define it in a function and call it.
 Then we need to convert it from JSON to string format.
@@ -180,3 +201,5 @@ function getUsers() {
   ];
 }
 ```
+
+[code](link)
