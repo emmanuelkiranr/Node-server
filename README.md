@@ -156,28 +156,6 @@ case "/about-me":
 
 NOTE: This is just the GET request only, while working with multiple request types like GET, POST, DEL, we use Express.js
 
-### Parsing an URL
-
-Instead of comparing the path with req.url we can parse the url that is been requested and get the path, pathname etc. which then can be used to compare and send response.
-Parsing is done using the "url" core module.
-
-```
-  const link = url.parse(req.url, true);
-  const path = link.pathname;
-  switch (path) {
-    case "/":
-      res.end("<p>This is home page!</p>");
-      break;
-    case "/api/users":
-      res.setHeader("Content-Type", "applicatiom/json");
-      let json = JSON.stringify(getUsers());
-      res.end(json);
-      break;
-  }
-```
-
-[code](https://github.com/emmanuelkiranr/Node-server/blob/main/getJsonData.js)
-
 ### JSON as response
 
 To display a json object as response we need to fetch the object first or explicitely define it in a function and call it.
@@ -204,3 +182,61 @@ function getUsers() {
 ```
 
 [code](https://github.com/emmanuelkiranr/Node-server/blob/main/getJsonData.js)
+
+### Parsing an URL
+
+Instead of comparing the path with req.url we can parse the url that is been requested and get the path, pathname, query etc. which then can be used to compare and send response.
+Parsing is done using the "url" core module.
+
+```
+  const link = url.parse(req.url, true);
+  const path = link.pathname;
+  switch (path) {
+    case "/":
+      res.end("<p>This is home page!</p>");
+      break;
+    case "/api/users":
+      res.setHeader("Content-Type", "applicatiom/json");
+      let json = JSON.stringify(getUsers());
+      res.end(json);
+      break;
+  }
+```
+
+[code](https://github.com/emmanuelkiranr/Node-server/blob/main/getJsonData.js)
+
+### QueryString
+
+It is the name/key value pair appended after the ? in the url request that we send, separated by & if there are multiple key value pair
+
+Once we parse the request url using the url module we get an object which has a property named query, we can use this query object [based on id here] to filter the response we want to send.
+
+Filtering JSON data based on the id passed as query in the url
+
+```
+// continuing with the previous example
+
+// req.url => http://localhost:3000/api/users, http://localhost:3000/api/users?id=3
+
+case "/api/users":
+    let users = getUsers();
+    let id = link.query.id; -  here we get the id from the url ie from the query ie the key value pairs appended after the ? [if nothing is appended then the value is undefined]
+
+    console.log(link.query);
+    let user = null;
+
+    for (let i = 0; i < users.length; i++) {
+        if (users[i].id == id) {
+            // we compare the value of id from the query object with the json data we fetched
+            user = users[i];
+            break;
+        }
+    }
+
+    let json = JSON.stringify({ data: user }); // we return that particular object only
+    res.setHeader("Content-Type", "application/json");
+    res.end(json);
+    break;
+```
+
+[code](https://github.com/emmanuelkiranr/Node-server/blob/main/searchByQuery.js)
