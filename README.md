@@ -105,7 +105,7 @@ server.listen(3000, "localhost", () => {
 ```
 
 Based on the url we have to send different response, so to do routing we use req.url
-[routing](link)
+[routing](https://github.com/emmanuelkiranr/Node-server/blob/main/routing.js)
 
 ```
 const server = http.createServer((req, res) => {
@@ -154,4 +154,29 @@ case "/about-me":
       break;
 ```
 
-This is just the GET request only, while working with multiple request types like GET, POST, DEL, we use Express.js
+NOTE: This is just the GET request only, while working with multiple request types like GET, POST, DEL, we use Express.js
+
+JSON as response
+
+To display a json object as response we need to fetch the object first or explicitely define it in a function and call it.
+Then we need to convert it from JSON to string format.
+
+```
+let json = JSON.stringify(getUsers());
+res.end(json);
+
+// function
+
+function getUsers() {
+  return [
+    {
+      email: "qwe@gmail.com",
+      name: "Alice",
+    },
+    {
+      email: "asd@gmail.com",
+      name: "Bob",
+    },s
+  ];
+}
+```
