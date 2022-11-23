@@ -240,8 +240,9 @@ case "/api/users":
 ```
 
 [code](https://github.com/emmanuelkiranr/Node-server/blob/main/searchByQuery.js)
+[code2](https://github.com/emmanuelkiranr/Node-server/blob/main/searchUserDataByQuery.js)
 
-### QueryString from form data
+### QueryString from HTML form data
 
 ```
  case "/login":
