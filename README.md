@@ -240,3 +240,39 @@ case "/api/users":
 ```
 
 [code](https://github.com/emmanuelkiranr/Node-server/blob/main/searchByQuery.js)
+
+### Pagination
+
+Firstly we append the users data into an response object and stringify it before sending it as response
+
+```
+let response = {
+  itemsPerPage: itemsPerPage,
+  totalPages: totalPages,
+  pageNumber: pageNumber,
+  data: users,
+};
+```
+
+This will render all the user details so we have to slice it, like 2 items per page.
+
+```
+let itemsPerPage = 2;
+let totalPages = Math.ceil(users.length / itemsPerPage); // 3
+let pageNumber = 1;
+
+let requestedPage = parseInt(link.query.page); // 1
+if (!isNaN(requestedPage)) {
+  pageNumber = requestedPage;
+}
+
+let startIndex = (pageNumber - 1) * itemsPerPage; // 0
+let endIndex = pageNumber * itemsPerPage; // 2
+
+let response = {
+  itemsPerPage: itemsPerPage,
+  totalPages: totalPages,
+  pageNumber: pageNumber,
+  data: users.slice(startIndex, endIndex), // 1, 2
+};
+```
