@@ -241,6 +241,47 @@ case "/api/users":
 
 [code](https://github.com/emmanuelkiranr/Node-server/blob/main/searchByQuery.js)
 
+### QueryString from form data
+
+```
+ case "/login":
+  let content = fs.readFileSync("./login.html", "utf-8");
+  res.end(content);
+  break;
+```
+
+- Firstly we render the html form when a request is send to the login page
+
+```
+<form action="/result">
+...
+</form>
+```
+
+- Once the user submits the form they get automatically redirected to the url we mention in the action attribute of form tag
+- Now after the redirection the req.url becomes `/result`. So we render the result page as response which shows the form data
+
+NOTE: Here query is an object with the keys email & password, we get this query from the req.url during redirection cause this is a GET method
+
+```
+case "/result":
+  res.write(query.email);
+  res.write(query.password);
+  res.end(`<html>
+    <head>
+    <title>
+    </title>
+    </head>
+    <body>
+    <p>${query.email}</p>
+    </br>
+    <p>${query.password}</p>
+    </body>
+    </html>`);
+```
+
+[code](https://github.com/emmanuelkiranr/Node-server/blob/main/queryString.js)
+
 ### Pagination
 
 Firstly we append the users data into an response object and stringify it before sending it as response
