@@ -6,6 +6,7 @@ In node we write code to create a server and listen to requests from browser and
 
 ```
     import http from "http";
+    or use destructurnig import - import {createServer} from "http"; -> createServer((req, res) => {})
 
     const server = http.createServer((req, res) => {
     console.log("Request made");
@@ -13,7 +14,7 @@ In node we write code to create a server and listen to requests from browser and
     });
 ```
 
-- We creating an instance of the server
+- We create an instance of the server
 - The cb runs everytime a request comes in, say a req to home page comes in then the callback runs and sends the homepage to browser
 - createServer gives us access to 2 objs req and res, req contains info about the url, req-type:get/post etc, res obj to send response to user
 
@@ -31,16 +32,13 @@ In node we write code to create a server and listen to requests from browser and
 Basically there are 3 steps
 
 - Specify response header so browser knows what kind of response is it receiving, also uses it to set cookies.
+  `res.setHeader("Content-Type", "text/plane");`
 
-```
-    res.setHeader("Content-Type", "text/plane");
-```
+- To specify status and header together
+  `res.writeHead(200, {"Content-Type": "text/plane"})`
 
 - To send data to the browser we use write method
-
-```
-    res.write("Hello from the server!");
-```
+  `res.write("Hello from the server!");`
 
 ```
 import http from "http";
@@ -152,6 +150,31 @@ case "/about-me":
       res.setHeader("Location", "/about");
       res.end();
       break;
+```
+
+Since in the above method we have to seth the statuscode and path manually for each response and we are writing response using readFile, since for writing large chunks of data we should be using Streams
+
+```
+const sendFile = (res, status, type, file) => {
+  res.writeHead(status, { "content-type": type });
+  createReadStream(file).pipe(res); // we read the "file" and send it as "res" response using pipe
+};
+
+This allows us to serve all file types individually
+createServer((req, res) => {
+  switch (req.url) {
+    case "/":
+      return sendFile(res, 200, "text/html", "./views/index.html");
+    case "/about.html":
+      return sendFile(res, 200, "text/html", "./views/about.html");
+    case "/styles.css":
+      return sendFile(res, 200, "text/css", "./views/styles.css");
+    case "/image.jpg":
+      return sendFile(res, 200, "image/jpg", "./views/image.jpg");
+    default:
+      return sendFile(res, 200, "text/html", "./views/404.html");
+  }
+}).listen(3000);
 ```
 
 NOTE: This is just the GET request only, while working with multiple request types like GET, POST, DEL, we use Express.js

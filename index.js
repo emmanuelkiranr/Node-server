@@ -1,7 +1,9 @@
 import http from "http";
 
 let server = http.createServer((req, res) => {
-  res.setHeader("content-type", "text/html");
+  // res.setHeader("content-type", "text/html");
+  res.writeHead(200, { "content-type": "text/html" });
+  console.log(req.url);
   //   for (let i = 0; i < 10; i++) {
   //     res.write(`<h1>Welcome</h1>`);
   //   }
