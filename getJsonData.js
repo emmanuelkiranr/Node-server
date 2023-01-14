@@ -1,29 +1,42 @@
-import http from "http";
+import { createServer } from "http";
 import url from "url";
 
-const server = http.createServer((req, res) => {
-  res.setHeader("Content-Type", "text/html");
-  const link = url.parse(req.url, true);
-  const path = link.pathname;
+createServer((req, res) => {
+  res.writeHead(200, { "Content-Type": "application/json" });
+  let json = getUsers();
+  let link = url.parse(req.url, true);
+  let path = link.pathname;
+  let user;
   switch (path) {
     case "/":
-      res.end("<p>This is home page!</p>");
+      res.end(JSON.stringify(json));
       break;
-    case "/api/users":
-      let json = JSON.stringify(getUsers());
-      res.setHeader("Content-Type", "application/json");
-      res.end(json);
+    case "/alice":
+      user = json.filter((obj) => obj.name === "Alice");
+      // console.log(user);
+      res.end(JSON.stringify(user));
       break;
+    case "/carol":
+      user = json.filter((obj) => obj.name === "Carol");
+      res.end(JSON.stringify(user));
+      break;
+    default:
+      res.writeHead(404, { "Content-Type": "text/html" });
+      res.write(
+        `        <!DOCTYPE html>
+        <html>
+          <head>
+            <title>Page not found</title>
+          </head>
+          <body>
+            <h3>404 Error</h3>
+            <p>Page not found, please contact admin</p>
+          </body>
+        </html>`
+      );
+      res.end();
   }
-});
-
-server.listen(3000, "localhost", () => {
-  console.log(`Server running on localhost 3000`);
-});
-
-server.on("request", (req, res) => {
-  console.log(`${req.method} request received on ${req.url}`);
-});
+}).listen(3000);
 
 function getUsers() {
   let id = 1;
