@@ -1,0 +1,27 @@
+<body>
+    <div>
+        <script>
+
+            fetch(`http://localhost:3000/dictionary/items`).then((res) => {
+                return res.json();
+            }).then(data => {
+                let users = data;
+                users.forEach(user => {
+                    const name = `<h3>${user.name}</h3>`
+                    const definition = `<p>${user.definition}</p>`
+                    document.querySelector(`h3`).insertAdjacentHTML("beforeend", name)
+                    document.querySelector('h3').insertAdjacentHTML("beforeend", definition)
+                })
+            })
+
+        </script>
+        <h1>Dictionary words</h1>
+        <h3>
+        </h3>
+        <form method="post">
+            <input type="text" name="name" placeholder="name" />
+            <input type="text" name="definition" placeholder="definition" />
+            <input type="submit" />
+        </form>
+    </div>
+</body>

@@ -341,3 +341,51 @@ let response = {
   data: users.slice(startIndex, endIndex), // 1, 2
 };
 ```
+
+## Sending Http requests from html file
+
+`index.handlebars`
+
+```
+<div>
+
+    <script>
+        fetch(`http://localhost:3000/dictionary/items`).then((res) => {
+            return res.json();
+        }).then(data => {
+            let users = data;
+            console.log(users);
+
+            users.forEach(user => {
+                const name = `<h3>${user.name}</h3>`
+                const definition = `<p>${user.definition}</p>`
+                document.querySelector(`h3`).insertAdjacentHTML("beforeend", name)
+                document.querySelector('h3').insertAdjacentHTML("beforeend", definition)
+            })
+        })
+    </script>
+
+    <h1>Dictionary words</h1>
+    <h3></h3>
+</div>
+```
+
+- The html file contains a script which sends the request to the server using fetch(), we then inject the response of this request to the html page using document.querySelector.
+
+- Now we need to create the api to handle this request.
+
+- create an express app
+
+```
+import dictionary from "./dictionary.json" assert { type: "json" }; - the response of the api is stored here
+
+app.get("/", (req, res) => {
+res.render("index");
+}); - This will render the html page index.hbs using handlebars, this page contains the above script which sends the request
+
+app.get("/dictionary/items", (req, res) => {
+res.json(dictionary);
+}); - this controller handles the api request\
+```
+
+- The request is automatically send once the page is initially rendered, so we create an additional handler to handle this `get` request once the request is sent to this api we send the json as response.
