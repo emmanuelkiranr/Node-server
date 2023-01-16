@@ -389,3 +389,27 @@ res.json(dictionary);
 ```
 
 - The request is automatically send once the page is initially rendered, so we create an additional handler to handle this `get` request once the request is sent to this api we send the json as response.
+
+## Update the json db
+
+```
+app.post("/", (req, res) => {
+  //   const { name, definition } = req.body; // since req.body is an object we can directly push it
+  dictionary.push(req.body); // this doesn't push to the file so create another function to do so
+  // here the dictionary contains the latest state but it is not yet written to the file
+  save();
+  //   res.json({
+  //     status: "success",
+  //     term: req.body,
+  //   });
+  res.render("index");
+});
+
+const save = () => {
+  fs.writeFile("./dictionary.json", JSON.stringify(dictionary), (err) => {
+    if (err) {
+      throw err;
+    }
+  });
+};
+```
