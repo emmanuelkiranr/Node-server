@@ -18,6 +18,14 @@ app.get("/", (req, res) => {
   res.render("index");
 });
 
+app.use((req, res, next) => {
+  console.log(`${req.method} request for ${req.url}`);
+  if (Object.keys(req.body).length) {
+    console.log(req.body);
+  }
+  next();
+});
+
 app.get("/dictionary/items", (req, res) => {
   res.json(dictionary);
 });

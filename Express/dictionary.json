@@ -1,1 +1,8 @@
-[{"name":"Emmanel","definition":"God with us"},{"name":"rubricate","definition":"to mark or color with red"}]
+[
+  { "name": "Emmanel", "definition": "God with us" },
+  { "name": "rubricate", "definition": "to mark or color with red" },
+  {
+    "name": "middleware",
+    "definition": "the code executed between a request and response"
+  }
+]
