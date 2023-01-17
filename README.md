@@ -160,6 +160,8 @@ const sendFile = (res, status, type, file) => {
   createReadStream(file).pipe(res); // we read the "file" and send it as "res" response using pipe
 };
 
+// we use pipe if we are writing the same data we read without any modification. so bacically here we are writing to response ie res.write using the pipe.
+
 This allows us to serve all file types individually
 createServer((req, res) => {
   switch (req.url) {
@@ -413,3 +415,5 @@ const save = () => {
   });
 };
 ```
+
+[code](https://github.com/emmanuelkiranr/Node-server/tree/main/Express)
